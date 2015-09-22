@@ -27,6 +27,8 @@ class DatePickerDialog: UIView {
     private var doneButtonTitle: String!
     private var cancelButtonTitle: String!
     private var defaultDate: NSDate!
+    private var minimumDate: NSDate!
+    private var maximumDate: NSDate!
     private var datePickerMode: UIDatePickerMode!
     private var callback: ((date: NSDate) -> Void)!
     
@@ -52,13 +54,15 @@ class DatePickerDialog: UIView {
         show(title, doneButtonTitle: "Done", cancelButtonTitle: "Cancel", datePickerMode: datePickerMode, callback: callback)
     }
     
-    func show(title: String, doneButtonTitle: String, cancelButtonTitle: String, defaultDate: NSDate = NSDate(), datePickerMode: UIDatePickerMode = .DateAndTime, callback: ((date: NSDate) -> Void)) {
+    func show(title: String, doneButtonTitle: String, cancelButtonTitle: String, defaultDate: NSDate = NSDate(), maximumDate: NSDate = NSDate(), minimumDate: NSDate = NSDate(timeIntervalSince1970: 0), datePickerMode: UIDatePickerMode = .DateAndTime, callback: ((date: NSDate) -> Void)) {
         self.title = title
         self.doneButtonTitle = doneButtonTitle
         self.cancelButtonTitle = cancelButtonTitle
         self.datePickerMode = datePickerMode
         self.callback = callback
         self.defaultDate = defaultDate
+        self.maximumDate = maximumDate
+        self.minimumDate = minimumDate
         
         self.dialogView = createContainerView()
         
@@ -195,6 +199,8 @@ class DatePickerDialog: UIView {
         self.datePicker.frame.size.width = 300
         self.datePicker.datePickerMode = self.datePickerMode
         self.datePicker.date = self.defaultDate
+        self.datePicker.maximumDate = self.maximumDate
+        self.datePicker.minimumDate = self.minimumDate
         dialogContainer.addSubview(self.datePicker)
         
         // Add the buttons
